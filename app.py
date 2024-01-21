@@ -1,16 +1,13 @@
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
-import json
-import pandas as pd
+from linebot.models import *
+import os
 
 app = Flask(__name__)
 
-access_token = '0VwSNMKzkkxvqbBG0QJHjOro/LAbii4Fmn47oG3Dnjnj3ZVDUu+o8a0ZqMIDHNI0ZdZsVKthhCDJhsDN+hEUEeE0pT6qyhQmDoeoYwhI8Vwy3/vZdpKUEYE7YvF5Yf2niVZ+6xT9hTvoTT5PcXHm8QdB04t89/1O/w1cDnyilFU='
-secret = '95a60f29fc8c4db5c373b53ea55f25cf'
-line_bot_api = LineBotApi(access_token)              
-handler = WebhookHandler(secret) 
+line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
+handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
 
 
 @app.route("/callback", methods=['POST'])
@@ -29,6 +26,7 @@ def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     line_bot_api.reply_message(event.reply_token, message)
 
-
+import os
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
