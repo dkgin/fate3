@@ -18,9 +18,10 @@ def callback():
         signature = request.headers['X-Line-Signature']       # 加入回傳的 headers
         handler.handle(body, signature)                       # 綁定訊息回傳的相關資訊
         json_data = json.loads(body)                          # 轉換內容為 json 格式
-        reply_token = json_data['events'][0]['replyToken']    # 取得回傳訊息的 Token ( reply message 使用 )
-        user_id = json_data['events'][0]['source']['userId']  # 取得使用者 ID ( push message 使用 )
-        print(json_data)                         # 印出內容
+        if 'events' in json_data and json_data['events']:
+            reply_token = json_data['events'][0]['replyToken']    # 取得回傳訊息的 Token ( reply message 使用 )
+            user_id = json_data['events'][0]['source']['userId']  # 取得使用者 ID ( push message 使用 )
+            print(json_data)                         # 印出內容
         if 'message' in json_data['events'][0]:           # 如果傳送的是 message
             if json_data['events'][0]['message']['type'] == 'location':                    # 如果 message 的類型是地圖 location
                 address = json_data['events'][0]['message']['address'].replace('台','臺')   # 取出地址資訊，並將「台」換成「臺」
@@ -45,13 +46,6 @@ def callback():
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-    @handler.add(MessageEvent, message=TextMessage)
-    def handle_text_message(event):
-    # 檢查 events 是否為空
-        if 'events' in event and len(event['events']) > 0:
-            reply_token = event['events'][0]['replyToken']
-        # 在這裡處理訊息回覆的邏輯，例如使用 line_bot_api.reply_message() 來回覆訊息
 
     
     
