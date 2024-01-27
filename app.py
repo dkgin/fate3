@@ -22,22 +22,22 @@ def callback():
             reply_token = json_data['events'][0]['replyToken']    # 取得回傳訊息的 Token ( reply message 使用 )
             user_id = json_data['events'][0]['source']['userId']  # 取得使用者 ID ( push message 使用 )
             print(json_data)                         # 印出內容
-        if 'message' in json_data['events'][0]:           # 如果傳送的是 message
-            if json_data['events'][0]['message']['type'] == 'location':                    # 如果 message 的類型是地圖 location
-                address = json_data['events'][0]['message']['address'].replace('台','臺')   # 取出地址資訊，並將「台」換成「臺」
-                reply_message(f'{address}\n\n{current_weather(address)}\n\n{forecast(address)}', reply_token, access_token)
-                print(address)
-        if json_data['events'][0]['message']['type'] == 'text':   # 如果 message 的類型是文字 text
-            text = json_data['events'][0]['message']['text']      # 取出文字
-            if text == '雷達回波圖' or text == '雷達回波':           # 如果是雷達回波圖相關的文字
+            if 'message' in json_data['events'][0]:           # 如果傳送的是 message
+                if json_data['events'][0]['message']['type'] == 'location':                    # 如果 message 的類型是地圖 location
+                    address = json_data['events'][0]['message']['address'].replace('台','臺')   # 取出地址資訊，並將「台」換成「臺」
+                    reply_message(f'{address}\n\n{current_weather(address)}\n\n{forecast(address)}', reply_token, access_token)
+                    print(address)
+            if json_data['events'][0]['message']['type'] == 'text':   # 如果 message 的類型是文字 text
+                text = json_data['events'][0]['message']['text']      # 取出文字
+                if text == '雷達回波圖' or text == '雷達回波':           # 如果是雷達回波圖相關的文字
                 # 傳送雷達回波圖 ( 加上時間戳記 )
-                reply_image(f'https://cwaopendata.s3.ap-northeast-1.amazonaws.com/Observation/O-A0058-001.png?{time.time_ns()}', reply_token, access_token)
-            elif text == '地震資訊' or text == '地震':        # 如果是地震相關的文字
-                msg = earth_quake()   # 爬取地震資訊
-                push_message(msg[0], user_id, access_token)       # 傳送地震資訊 ( 用 push 方法，因為 reply 只能用一次 )
-                reply_image(msg[1], reply_token, access_token)    # 傳送地震圖片 ( 用 reply 方法 )
-            else:
-                reply_message(text, reply_token, access_token)        # 如果是一般文字，直接回覆同樣的文字
+                    reply_image(f'https://cwaopendata.s3.ap-northeast-1.amazonaws.com/Observation/O-A0058-001.png?{time.time_ns()}', reply_token, access_token)
+                elif text == '地震資訊' or text == '地震':        # 如果是地震相關的文字
+                    msg = earth_quake()   # 爬取地震資訊
+                    push_message(msg[0], user_id, access_token)       # 傳送地震資訊 ( 用 push 方法，因為 reply 只能用一次 )
+                    reply_image(msg[1], reply_token, access_token)    # 傳送地震圖片 ( 用 reply 方法 )
+                else:
+                    reply_message(text, reply_token, access_token)        # 如果是一般文字，直接回覆同樣的文字
     except InvalidSignatureError:
         abort(400)                
     return 'OK'                              # 驗證 Webhook 使用，不能省略
