@@ -11,8 +11,8 @@ line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
 
 
-@app.route("/", methods=['POST'])
-def linebot():
+@app.route("/callback", methods=['POST'])
+def callback():
     body = request.get_data(as_text=True)    # 取得收到的訊息內容
     try:
         line_bot_api = LineBotApi(access_token)               # 確認 token 是否正確
