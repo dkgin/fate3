@@ -39,8 +39,8 @@ def callback():
                 reply_image(msg[1], reply_token, access_token)    # 傳送地震圖片 ( 用 reply 方法 )
             else:
                 reply_message(text, reply_token, access_token)        # 如果是一般文字，直接回覆同樣的文字
-    except Exception as e:
-        print(f"Error: {e}")                       # 如果發生錯誤，印出 error
+    except InvalidSignatureError:
+        abort(400)                
     return 'OK'                              # 驗證 Webhook 使用，不能省略
 
 import os
