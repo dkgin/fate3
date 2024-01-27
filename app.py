@@ -72,26 +72,14 @@ def earth_quake():
 # LINE push 訊息函式
 def push_message(msg, uid, token):
     headers = {'Authorization':f'Bearer {token}','Content-Type':'application/json'}
-    body = {
-    'to':uid,
-    'messages':[{
-        "type": "text",
-        "text": msg
-        }]
-        }
+    body = {'to':uid,'messages':[{"type": "text","text": msg}]}
     req = requests.request('POST', 'https://api.line.me/v2/bot/message/push', headers=headers,data=json.dumps(body).encode('utf-8'))
     print(req.text)
 
 # LINE 回傳訊息函式
 def reply_message(msg, rk, token):
     headers = {'Authorization':f'Bearer {token}','Content-Type':'application/json'}
-    body = {
-    'replyToken':rk,
-    'messages':[{
-        "type": "text",
-        "text": msg
-        }]
-        }
+    body = {'replyToken':rk,'messages':[{"type": "text","text": msg}]}
     req = requests.request('POST', 'https://api.line.me/v2/bot/message/reply', headers=headers,data=json.dumps(body).encode('utf-8'))
     print(req.text)
 
@@ -99,14 +87,7 @@ def reply_message(msg, rk, token):
 # LINE 回傳圖片函式
 def reply_image(msg, rk, token):
     headers = {'Authorization':f'Bearer {token}','Content-Type':'application/json'}
-    body = {
-    'replyToken':rk,
-    'messages':[{
-        'type': 'image',
-        'originalContentUrl': msg,
-        'previewImageUrl': msg
-        }]
-        }
+    body = {'replyToken':rk,'messages':[{'type': 'image','originalContentUrl': msg,'previewImageUrl': msg}]}
     req = requests.request('POST', 'https://api.line.me/v2/bot/message/reply', headers=headers,data=json.dumps(body).encode('utf-8'))
     print(req.text)
 
@@ -157,9 +138,7 @@ def current_weather(address):
 
         for i in city_list:
             if i not in area_list2: # 將主要縣市裡的數值平均後，以主要縣市名稱為 key，再度儲存一次，如果找不到鄉鎮區域，就使用平均數值
-                area_list2[i] = {'temp':round(statistics.mean(city_list[i]['temp']),1),
-                'humd':round(statistics.mean(city_list[i]['humd']),1)
-                }
+                area_list2[i] = {'temp':round(statistics.mean(city_list[i]['temp']),1),'humd':round(statistics.mean(city_list[i]['humd']),1)}
         msg = msg_content(area_list2, msg)  # 將訊息改為「大縣市」
         msg = msg_content(area_list, msg)   # 將訊息改為「鄉鎮區域」
         return msg    # 回傳 msg
@@ -169,12 +148,7 @@ def current_weather(address):
 def forecast(address):
     area_list = {}
     # 將主要縣市個別的 JSON 代碼列出
-    json_api = {"宜蘭縣":"F-D0047-001","桃園市":"F-D0047-005","新竹縣":"F-D0047-009","苗栗縣":"F-D0047-013",
-    "彰化縣":"F-D0047-017","南投縣":"F-D0047-021","雲林縣":"F-D0047-025","嘉義縣":"F-D0047-029",
-    "屏東縣":"F-D0047-033","臺東縣":"F-D0047-037","花蓮縣":"F-D0047-041","澎湖縣":"F-D0047-045",
-    "基隆市":"F-D0047-049","新竹市":"F-D0047-053","嘉義市":"F-D0047-057","臺北市":"F-D0047-061",
-    "高雄市":"F-D0047-065","新北市":"F-D0047-069","臺中市":"F-D0047-073","臺南市":"F-D0047-077",
-    "連江縣":"F-D0047-081","金門縣":"F-D0047-085"}
+    json_api = {"宜蘭縣":"F-D0047-001","桃園市":"F-D0047-005","新竹縣":"F-D0047-009","苗栗縣":"F-D0047-013","彰化縣":"F-D0047-017","南投縣":"F-D0047-021","雲林縣":"F-D0047-025","嘉義縣":"F-D0047-029","屏東縣":"F-D0047-033","臺東縣":"F-D0047-037","花蓮縣":"F-D0047-041","澎湖縣":"F-D0047-045","基隆市":"F-D0047-049","新竹市":"F-D0047-053","嘉義市":"F-D0047-057","臺北市":"F-D0047-061","高雄市":"F-D0047-065","新北市":"F-D0047-069","臺中市":"F-D0047-073","臺南市":"F-D0047-077","連江縣":"F-D0047-081","金門縣":"F-D0047-085"}
     msg = '找不到天氣預報資訊。'    # 預設回傳訊息
     try:
         code = 'CWA-C7DED748-AB01-46ED-B03D-3730BA31B6B0'
