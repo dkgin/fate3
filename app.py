@@ -40,17 +40,18 @@ def callback():
         abort(400)                
     return 'OK'                              # 驗證 Webhook 使用，不能省略
 
+@handler.add(MessageEvent, message=TextMessage)
+def handle_text_message(event):
+    # 檢查 events 是否為空
+    if 'events' in event and len(event['events']) > 0:
+        reply_token = event['events'][0]['replyToken']
+        # 在這裡處理訊息回覆的邏輯，例如使用 line_bot_api.reply_message() 來回覆訊息
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     
-    @handler.add(MessageEvent, message=TextMessage)
-    def handle_text_message(event):
-    # 檢查 events 是否為空
-        if len(event.message.text) > 0:
-            reply_token = event.reply_token
-        # 在這裡處理訊息回覆的邏輯，例如使用 line_bot_api.reply_message() 來回覆訊息
-
+    
 # 地震資訊函式
 def earth_quake():
     msg = ['找不到地震資訊','https://example.com/demo.jpg']            # 預設回傳的訊息
