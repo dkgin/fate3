@@ -29,8 +29,7 @@ def callback():
                     print(address)
             if json_data['events'][0]['message']['type'] == 'text':   # 如果 message 的類型是文字 text
                 text = json_data['events'][0]['message']['text']      # 取出文字
-                if text == '雷達回波圖' or text == '雷達回波':           # 如果是雷達回波圖相關的文字
-                # 傳送雷達回波圖 ( 加上時間戳記 )
+                if text == '雷達回波圖' or text == '雷達回波': 
                     reply_image(f'https://cwaopendata.s3.ap-northeast-1.amazonaws.com/Observation/O-A0058-001.png?{time.time_ns()}', reply_token, access_token)
                 elif text == '地震資訊' or text == '地震':        # 如果是地震相關的文字
                     msg = earth_quake()   # 爬取地震資訊
