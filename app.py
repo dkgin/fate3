@@ -172,7 +172,7 @@ def callback():
                     push_message(msg[0], user_id, access_token)       # 傳送地震資訊 ( 用 push 方法，因為 reply 只能用一次 )
                     reply_image(msg[1], reply_token, access_token)    # 傳送地震圖片 ( 用 reply 方法 )
                 else:
-                    reply_message(text, reply_token, access_token)        # 如果是一般文字，直接回覆同樣的文字
+                    reply_message(f'請點選左下方☰圖示，開啟選單功能', reply_token, access_token)        # 如果是一般文字，直接回覆同樣的文字
     except InvalidSignatureError:
         abort(400)                
     return 'OK'                              # 驗證 Webhook 使用，不能省略
