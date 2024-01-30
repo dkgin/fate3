@@ -106,7 +106,7 @@ def forecast(address):
     area_list = {}
     # 將主要縣市個別的 JSON 代碼列出
     json_api = {"宜蘭縣":"F-D0047-001","桃園市":"F-D0047-005","新竹縣":"F-D0047-009","苗栗縣":"F-D0047-013","彰化縣":"F-D0047-017","南投縣":"F-D0047-021","雲林縣":"F-D0047-025","嘉義縣":"F-D0047-029","屏東縣":"F-D0047-033","臺東縣":"F-D0047-037","花蓮縣":"F-D0047-041","澎湖縣":"F-D0047-045","基隆市":"F-D0047-049","新竹市":"F-D0047-053","嘉義市":"F-D0047-057","臺北市":"F-D0047-061","高雄市":"F-D0047-065","新北市":"F-D0047-069","臺中市":"F-D0047-073","臺南市":"F-D0047-077","連江縣":"F-D0047-081","金門縣":"F-D0047-085"}
-    msg = '找不到天氣預報資訊。\n\n請確認是否為台灣的中文地址=口='    # 預設回傳訊息
+    msg = '找不到天氣預報資訊。\n\n請確認是台灣中文地址=口='    # 預設回傳訊息
     try:
         code = 'CWA-C7DED748-AB01-46ED-B03D-3730BA31B6B0'
         url = f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization={code}&format=JSON'
@@ -143,7 +143,7 @@ def forecast(address):
 # 空氣品質函式
 def aqi(address):
     city_list, site_list ={}, {}
-    msg = '空氣品質資料更新中,請稍候再試。'
+    msg = '空氣資料更新中,請稍候再試。'
     try:
         # 2022/12 時氣象局有修改了 API 內容，將部份大小寫混合全改成小寫，因此程式碼也跟著修正
         url = 'https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=e8dd42e6-9b8b-43f8-991e-b3dee723a52d&limit=1000&sort=ImportDate desc&format=JSON'
